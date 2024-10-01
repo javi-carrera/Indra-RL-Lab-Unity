@@ -10352,6 +10352,7 @@ GameObject:
   - component: {fileID: 4279826449815376255}
   - component: {fileID: 534042278384883654}
   - component: {fileID: 459913130992450825}
+  - component: {fileID: 1503011898088936018}
   m_Layer: 0
   m_Name: BotTank
   m_TagString: Untagged
@@ -10438,7 +10439,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5700075243959902370}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c6060f04a91564468950bf6ae26db6e, type: 3}
   m_Name: 
@@ -10496,8 +10497,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683225da07ad12b4683fc73ae8017441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 459913130992450825}
+  navAgent: {fileID: 459913130992450825}
   target: {fileID: 0}
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  arrivalThreshold: 1
 --- !u!195 &459913130992450825
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10509,17 +10522,44 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.6
   m_Speed: 4
-  m_Acceleration: 8
+  m_Acceleration: 3
   avoidancePriority: 50
-  m_AngularSpeed: 150
-  m_StoppingDistance: 10
+  m_AngularSpeed: 100
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 1
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 1
+--- !u!54 &1503011898088936018
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700075243959902370}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!1 &6000127143375451224
 GameObject:
   m_ObjectHideFlags: 0
