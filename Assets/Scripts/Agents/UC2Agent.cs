@@ -15,6 +15,7 @@ public class UC2Agent : Agent<
     
     public float maxLinearVelocity;
     public float maxAngularVelocity;
+    public float maxTurretRotationSpeed;
 
     [Header("Tank Sensors")]
     [SerializeField] private Pose2DSensor _pose2DSensor;
@@ -64,26 +65,13 @@ public class UC2Agent : Agent<
 
 
     public override void OverrideAction() {
-        
-        // Override linear and angular velocity
-        Vector3 overridenLinearVelocity = maxLinearVelocity * new Vector3(0, 0, Input.GetAxis("Vertical"));
-        Vector3 overridenAngularVelocity = maxAngularVelocity * new Vector3(0, Input.GetAxis("Horizontal"), 0);
 
-        _twistActuator.targetLinearVelocity = overridenLinearVelocity;
-        _twistActuator.targetAngularVelocity = overridenAngularVelocity;
+        _twistActuator.targetLinearVelocity = maxLinearVelocity * new Vector3(0, 0, Input.GetAxis("Vertical"));
+        _twistActuator.targetAngularVelocity = maxAngularVelocity * new Vector3(0, Input.GetAxis("Horizontal"), 0);
+        _turret2DActuator.rotationSpeed = maxTurretRotationSpeed * Input.GetAxis("Horizontal2");
 
-        // Override turret angle (controlled with mouse scroll wheel)
-        _turret2DActuator.targetAngle += Input.GetAxis("Mouse ScrollWheel") * _turret2DActuator.rotationSpeed;
-
-
-        // Override fire
-        if (Input.GetButton("Fire1")) {
-            _turret2DActuator.fire = true;
-        }
-        else {
-            _turret2DActuator.fire = false;
-        }
-
+        if (Input.GetButton("Fire1")) _turret2DActuator.fire = true;
+        else _turret2DActuator.fire = false;
     }
 
 
@@ -133,6 +121,7 @@ public class UC2Agent : Agent<
         
         // Reset actuators
         _twistActuator.ResetActuator();
+        _turret2DActuator.ResetActuator();
 
         // Return the state
         return State();

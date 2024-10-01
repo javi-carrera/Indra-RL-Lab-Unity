@@ -48,7 +48,7 @@ public class TriggerSensor : Sensor {
         if (_hasTriggered) {
 
             // Update timer until it reaches maxTimerCount
-            _timerCount = (_timerCount + Time.deltaTime < maxTimerCount) ? _timerCount + Time.deltaTime : maxTimerCount;
+            _timerCount = (_timerCount + Time.fixedDeltaTime < maxTimerCount) ? _timerCount + Time.fixedDeltaTime : maxTimerCount;
 
         }
 

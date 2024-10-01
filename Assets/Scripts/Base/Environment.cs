@@ -46,10 +46,10 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
     [Header("Simulation")]
     public bool pause;
     public float sampleTime;
-    public float timeScale;
     public float fixedDeltaTime;
-    private bool _updateCalledBeforeStep = false;
-    private bool _fixedUpdateCalledBeforeStep = false;
+    public int fixedUpdatesPerStep;
+    private float _timeScale;
+    private int _fixedUpdateCallsBeforeStep;
 
 
     [Header("Agent")]
@@ -57,28 +57,17 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
 
 
     protected void Start() {
-
         GetCommandLineArguments();
-
         if (!_isInitialized) Initialize();
     }
 
-    protected void Update() {
-        _updateCalledBeforeStep = true;
-    }
-
     protected void FixedUpdate() {
-        _fixedUpdateCalledBeforeStep = true;
+        _fixedUpdateCallsBeforeStep++;
     }
 
     protected void OnDestroy() {
-
-        // Disconnect the ROS connection
         _ROS.Disconnect();
-
     }
-
-
 
 
     private void GetCommandLineArguments() {
@@ -90,36 +79,31 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
         for (int i = 0; i < args.Length; i++) {
 
             switch (args[i]) {
-
                 case "--ros-ip":
                     rosIPAddress = args[i + 1];
                     break;
-
                 case "--ros-port":
                     rosPort = int.Parse(args[i + 1]);
                     break;
-
                 case "--environment-id":
                     _environmentId = uint.Parse(args[i + 1]);
                     break;
-
                 case "--pause":
                     pause = bool.Parse(args[i + 1]);
                     break;
-
                 case "--sample-time":
                     sampleTime = float.Parse(args[i + 1], culture);
                     break;
-
-                case "--time-scale":
-                    timeScale = float.Parse(args[i + 1], culture);
+                case "--fixed-delta-time":
+                    fixedDeltaTime = float.Parse(args[i + 1], culture);
                     break;
-                
+                case "--fixed-updates-per-step":
+                    fixedUpdatesPerStep = int.Parse(args[i + 1]);
+                    break;
                 default:
                     break;
             }
         }
-
     }
 
 
@@ -137,18 +121,15 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
 
     private void InitialzeROS() {
 
-        // Initialize ROS connection and assign the IP address and port
         _ROS = ROSConnection.GetOrCreateInstance();
         
         _ROS.RosIPAddress = rosIPAddress;
         _ROS.RosPort = rosPort;
         _ROS.Connect();
 
-        // Define the service names
         _stepServiceName = $"/{rootServiceName}_{_environmentId}/step";
         _resetServiceName = $"/{rootServiceName}_{_environmentId}/reset";
 
-        // Implement the services
         _ROS.ImplementService<TStepRequest, TStepResponse>(_stepServiceName, StepServiceCallback);
         _ROS.ImplementService<TResetRequest, TResetResponse>(_resetServiceName, ResetServiceCallback);
 
@@ -156,11 +137,11 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
 
     private void InitializeSimulation() {
 
-        // Set the time scale
-        Time.timeScale = timeScale;
-
-        // Set the fixed delta time
         Time.fixedDeltaTime = fixedDeltaTime;
+        _timeScale = sampleTime / Time.fixedDeltaTime / fixedUpdatesPerStep;
+        Time.timeScale = _timeScale;
+
+        Debug.Log($"Time scale: {_timeScale}");
     }
 
     
@@ -171,44 +152,17 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
     private async Task<TStepResponse> StepServiceCallback(TStepRequest request) {
 
         TimeMsg requestReceivedTimestamp = GetCurrentTimestamp();
-
-        // Resume the environment
-        // if (pause) Resume();
         Resume();
-
-        // Execute the action
         Action(request);
 
-        // Wait for the update to be called
-        int alreadyWaitedMilliseconds = 0;
+        _fixedUpdateCallsBeforeStep = 0;
+        while (!(_fixedUpdateCallsBeforeStep >= fixedUpdatesPerStep))
+            await Task.Yield();
 
-        _updateCalledBeforeStep = false;
-        _fixedUpdateCalledBeforeStep = false;
-
-        while (!(_updateCalledBeforeStep && _fixedUpdateCalledBeforeStep)) {
-        // while (!_updateCalledBeforeStep) {
-            await Task.Delay(1);
-            alreadyWaitedMilliseconds++;
-        }
-        
-        int millisecondsToWait = (int)(sampleTime * 1000) - alreadyWaitedMilliseconds;
-        
-        // Wait for the sample time
-        if (millisecondsToWait > 0)
-            await Task.Delay(Mathf.CeilToInt(millisecondsToWait / timeScale));
-        else if (pause)
-            Debug.LogWarning($"The sample time {sampleTime} [s] is too short. Try increasing the sample time to {alreadyWaitedMilliseconds / 1000.0f} s or more.");
-    
-
-        // Get the state
         TStepResponse response = State(requestReceivedTimestamp);
-
-
-        // Pause the environment
         if (pause) Pause();
         
         return response;
-        
     }
 
     /// <summary>
@@ -217,17 +171,9 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
     private TResetResponse ResetServiceCallback(TResetRequest request) {
 
         TimeMsg requestReceivedTimestamp = GetCurrentTimestamp();
-
-        // Resume the environment
-        // if (pause) Resume();
         Resume();
-
-        // Reset the environment
         TResetResponse response = ResetEnvironment(request, requestReceivedTimestamp);
-        
-        // Pause the environment
         if (pause) Pause();
-
 
         return response;
     }
@@ -235,7 +181,7 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
 
     private void Pause() => Time.timeScale = 0.0f;
 
-    private void Resume() => Time.timeScale = timeScale;
+    private void Resume() => Time.timeScale = _timeScale;
 
     /// <summary>
     /// [TODO]
@@ -285,7 +231,7 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
     string IEnvironment.RootServiceName => rootServiceName;
     bool IEnvironment.Pause { get => pause; set => pause = value; }
     float IEnvironment.SampleTime { get => sampleTime; set => sampleTime = value; }
-    float IEnvironment.TimeScale { get => timeScale; set => timeScale = value; }
+    float IEnvironment.TimeScale { get => _timeScale; set => _timeScale = value; }
     int IEnvironment.RosPort { get => _ROS.RosPort; set => _ROS.RosPort = value; }
     List<IAgent> IEnvironment.Agents => _agents;
     

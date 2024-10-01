@@ -15,7 +15,7 @@ public abstract class Actuator<T> : MonoBehaviour, IActuator
     where T : Message, new() {
 
 
-    void Update() {
+    void FixedUpdate() {
         UpdateActuator();
     }
 

@@ -22,6 +22,7 @@ public class Turret2DSensor : Sensor {
         turret2DSensorMsg.fire_rate = turret2DActuator.fireRate;
         turret2DSensorMsg.cooldown = turret2DActuator.cooldown;
         turret2DSensorMsg.has_fired = turret2DActuator.hasFired;
+        turret2DActuator.hasFired = false;
     }
 
     protected override void UpdateSensor() {

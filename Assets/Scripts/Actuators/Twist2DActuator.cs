@@ -69,8 +69,8 @@ public class Twist2DActuator : Actuator<Twist2DMsg> {
         else {
             
             // Lerp the target velocities
-            _currentLinearVelocity = Vector3.Lerp(_currentLinearVelocity, targetLinearVelocity, linearTimeConstant * Time.deltaTime);
-            _currentAngularVelocity = Vector3.Lerp(_currentAngularVelocity, targetAngularVelocity, angularTimeConstant * Time.deltaTime);
+            _currentLinearVelocity = Vector3.Lerp(_currentLinearVelocity, targetLinearVelocity, linearTimeConstant * Time.fixedDeltaTime);
+            _currentAngularVelocity = Vector3.Lerp(_currentAngularVelocity, targetAngularVelocity, angularTimeConstant * Time.fixedDeltaTime);
 
             // Transform the target velocities to the target object's world space and apply the target velocities to the target object's rigidbody
             _rb.velocity = target.transform.TransformDirection(_currentLinearVelocity);

@@ -11,11 +11,10 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
     public Transform target;
     public Transform shootingPoint;
     public GameObject bulletPrefab;
-    public float rotationSpeed;
     public float shootVelocity;
     public float fireRate;
 
-    [HideInInspector] public float targetAngle;
+    [HideInInspector] public float rotationSpeed;
     [HideInInspector] public float currentAngle;
     [HideInInspector] public float cooldown;
     [HideInInspector] public bool fire;
@@ -38,14 +37,14 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
     public override void SetActuatorData(Turret2DActuatorMsg msg) {
 
         // Convert from ROS message to Unity data
-        targetAngle = msg.target_angle;
+        rotationSpeed = msg.target_angle;
         fire = msg.fire;
     }
 
     public override void ResetActuator() {
 
         // Reset ROS message data
-        targetAngle = 0.0f;
+        rotationSpeed = 0.0f;
         fire = false;
         hasFired = false;
 
@@ -57,33 +56,21 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
 
     protected override void UpdateActuator() {
 
-        // Calculate the target rotation (in global coordinates)
-        Quaternion targetRotation = transform.rotation * Quaternion.Euler(0, targetAngle, 0);
+        // Rotate the turret with rotation speed
+        target.transform.Rotate(Vector3.up, -rotationSpeed * Time.fixedDeltaTime);
+        currentAngle = target.localEulerAngles.y;
 
-        // Rotate the turret towards the target rotation
-        target.transform.rotation = Quaternion.RotateTowards(target.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-
-        // Update the current angle
-        currentAngle = target.transform.localEulerAngles.y;
+        // Calculate the velocity of the shooting point
+        _shootingPointVelocity = (shootingPoint.position - _previousShootingPointPosition) / Time.fixedDeltaTime;
+        _previousShootingPointPosition = shootingPoint.position;
 
         // Fire the bullet
-        cooldown -= Time.deltaTime;
+        cooldown = Mathf.Max(0, cooldown - Time.fixedDeltaTime);
         if (fire && cooldown <= 0) {
             cooldown = 1.0f / fireRate;
             Shoot();
             hasFired = true;
         }
-        else {
-            hasFired = false;
-        }
-    }
-
-    private void FixedUpdate() {
-
-        // Calculate the velocity of the shooting point
-        _shootingPointVelocity = (shootingPoint.position - _previousShootingPointPosition) / Time.fixedDeltaTime;
-        _previousShootingPointPosition = shootingPoint.position;
-        
     }
 
     private void Shoot() {

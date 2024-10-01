@@ -39,8 +39,8 @@ public class Pose2DActuator : Actuator<Pose2DMsg> {
 
         // Move towards target position and rotation
         target.transform.SetPositionAndRotation(
-            Vector3.MoveTowards(target.transform.position, targetPosition, positionSpeed * Time.deltaTime), 
-            Quaternion.RotateTowards(target.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime)
+            Vector3.MoveTowards(target.transform.position, targetPosition, positionSpeed * Time.fixedDeltaTime), 
+            Quaternion.RotateTowards(target.transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime)
         );
     }
 

@@ -15,7 +15,7 @@ public interface ISensor {
 public abstract class Sensor: MonoBehaviour, ISensor {
 
 
-    void Update() {
+    void FixedUpdate() {
         UpdateSensor();
     }
 

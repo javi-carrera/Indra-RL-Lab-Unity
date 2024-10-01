@@ -3,7 +3,7 @@ using UnityEditor;
 using System.IO;
 
 public class BuildSettingsWindow : EditorWindow {
-    private string buildPath = "";
+    private string buildPath = "../Indra-RL-Lab/unity/builds";
     private bool buildUC1 = true;
     private bool buildUC2 = true;
 
