@@ -11,6 +11,8 @@ public class BotTwist2DSensor : Sensor {
     public GameObject target;
     private NavMeshAgent navAgent;
 
+    [SerializeField] private Transform agentTransform;
+
     public override void Initialize() {
         twist2DMsg = new Twist2DMsg();
         navAgent = target.GetComponent<NavMeshAgent>();
@@ -21,7 +23,7 @@ public class BotTwist2DSensor : Sensor {
         Vector3 linearVelocity = navAgent.velocity;
 
         // Transform the velocities to the target object's local frame
-        linearVelocity = target.transform.InverseTransformDirection(linearVelocity);
+        linearVelocity = agentTransform.InverseTransformDirection(linearVelocity);
 
         // Convert Unity data to ROS message
         twist2DMsg.x = linearVelocity.x;

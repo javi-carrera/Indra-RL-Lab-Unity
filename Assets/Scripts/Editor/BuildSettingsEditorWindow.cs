@@ -7,6 +7,8 @@ public class BuildSettingsWindow : EditorWindow {
     private bool buildUC1 = true;
     private bool buildUC2 = true;
 
+    private bool buildUC3 = true;
+
     [MenuItem("Build/Build Settings")]
     public static void ShowWindow() {
         GetWindow<BuildSettingsWindow>("Build Settings");
@@ -33,6 +35,7 @@ public class BuildSettingsWindow : EditorWindow {
         GUILayout.Label("Scenes to Build:", EditorStyles.boldLabel);
         buildUC1 = EditorGUILayout.ToggleLeft("UC1 Scene", buildUC1);
         buildUC2 = EditorGUILayout.ToggleLeft("UC2 Scene", buildUC2);
+        buildUC3 = EditorGUILayout.ToggleLeft("UC3 Scene", buildUC3);
 
         GUILayout.Space(10);
 
@@ -41,6 +44,8 @@ public class BuildSettingsWindow : EditorWindow {
                 BuildManager.BuildWindows("Assets/Scenes/UC1Scene.unity", buildPath, "uc1");
             if (buildUC2)
                 BuildManager.BuildWindows("Assets/Scenes/UC2Scene.unity", buildPath, "uc2");
+            if (buildUC3)
+                BuildManager.BuildWindows("Assets/Scenes/UC3Scene.unity", buildPath, "uc3");
         }
 
         if (GUILayout.Button("Build Linux")) {
@@ -48,6 +53,8 @@ public class BuildSettingsWindow : EditorWindow {
                 BuildManager.BuildLinux("Assets/Scenes/UC1Scene.unity", buildPath, "uc1");
             if (buildUC2)
                 BuildManager.BuildLinux("Assets/Scenes/UC2Scene.unity", buildPath, "uc2");
+            if (buildUC3)
+                BuildManager.BuildLinux("Assets/Scenes/UC3Scene.unity", buildPath, "uc3");
         }
 
         if (GUILayout.Button("Build All Platforms")) {
@@ -55,6 +62,8 @@ public class BuildSettingsWindow : EditorWindow {
                 BuildManager.BuildAll("Assets/Scenes/UC1Scene.unity", buildPath, "uc1");
             if (buildUC2)
                 BuildManager.BuildAll("Assets/Scenes/UC2Scene.unity", buildPath, "uc2");
+            if (buildUC3)
+                BuildManager.BuildAll("Assets/Scenes/UC3Scene.unity", buildPath, "uc3");
         }
 
     }
