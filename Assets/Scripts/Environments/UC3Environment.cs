@@ -3,10 +3,10 @@ using UnityEngine;
 using RosMessageTypes.BuiltinInterfaces;
 
 using AgentType = UC3Agent;
-using StateRequest = RosMessageTypes.InterfacesPkg.UC2EnvironmentStepRequest;
-using StateResponse = RosMessageTypes.InterfacesPkg.UC2EnvironmentStepResponse;
-using ResetRequest = RosMessageTypes.InterfacesPkg.UC2EnvironmentResetRequest;
-using ResetResponse = RosMessageTypes.InterfacesPkg.UC2EnvironmentResetResponse;
+using StateRequest = RosMessageTypes.InterfacesPkg.UC3EnvironmentStepRequest;
+using StateResponse = RosMessageTypes.InterfacesPkg.UC3EnvironmentStepResponse;
+using ResetRequest = RosMessageTypes.InterfacesPkg.UC3EnvironmentResetRequest;
+using ResetResponse = RosMessageTypes.InterfacesPkg.UC3EnvironmentResetResponse;
 
 
 public class UC3Environment : Environment<
@@ -15,7 +15,7 @@ public class UC3Environment : Environment<
     ResetRequest,
     ResetResponse> {
     
-    [Header("UC2 Environment Settings")]
+    [Header("UC3 Environment Settings")]
     public AgentType agent;
     public GameObject target;
     public List<Transform> spawnPoints;

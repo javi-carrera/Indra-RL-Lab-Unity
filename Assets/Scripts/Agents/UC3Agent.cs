@@ -5,8 +5,8 @@ using RosMessageTypes.InterfacesPkg;
 using System;
 
 
-using ActionMsg = RosMessageTypes.InterfacesPkg.UC2AgentActionMsg;
-using StateMsg = RosMessageTypes.InterfacesPkg.UC2AgentStateMsg;
+using ActionMsg = RosMessageTypes.InterfacesPkg.UC3AgentActionMsg;
+using StateMsg = RosMessageTypes.InterfacesPkg.UC3AgentStateMsg;
 
 
 public class UC3Agent : Agent<
@@ -101,12 +101,16 @@ public class UC3Agent : Agent<
             turret_sensor = _turret2DSensor.turret2DSensorMsg,
         };
 
+        EnemyTankStateMsg enemyTankStateMsg = new EnemyTankStateMsg {
+            pose = _targetPose2DSensor.pose2DMsg,
+            twist = _targetTwist2DSensor.twist2DMsg,
+            health_info = _targetHealthSensor.healthInfoMsg,
+        };
+
         // Fill the response
         StateMsg state = new StateMsg {
             tank = tankStateMsg,
-            target_pose = _targetPose2DSensor.pose2DMsg,
-            // target_twist = _targetTwist2DSensor.twist2DMsg,
-            target_health_info = _targetHealthSensor.healthInfoMsg,
+            enemy_tank = enemyTankStateMsg,
         };
 
         return state;
