@@ -10347,12 +10347,12 @@ GameObject:
   - component: {fileID: 7632236207236330485}
   - component: {fileID: 9165369094385720545}
   - component: {fileID: 4576108168352581085}
-  - component: {fileID: 4885681929043644118}
   - component: {fileID: 6975013194245741253}
+  - component: {fileID: 2906257514314374594}
   - component: {fileID: 4279826449815376255}
-  - component: {fileID: 534042278384883654}
   - component: {fileID: 459913130992450825}
   - component: {fileID: 1503011898088936018}
+  - component: {fileID: 8572794779186092560}
   m_Layer: 0
   m_Name: BotTank
   m_TagString: Untagged
@@ -10432,26 +10432,6 @@ MonoBehaviour:
     type: 3}
   destructionParticles: {fileID: 19874418, guid: ee49a9a8678ecf8468eb488e1ac8d42b,
     type: 3}
---- !u!114 &4885681929043644118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5700075243959902370}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c6060f04a91564468950bf6ae26db6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 5778056209484332972, guid: fa6c3e66140b1024391c327dd337dc39,
-    type: 3}
-  shootingPoint: {fileID: 2356977860390399961}
-  agent: {fileID: 0}
-  turretBase: {fileID: 5858991594206649147}
-  shootVelocity: 35
-  rotationSpeed: 100
-  fireRate: 1
 --- !u!114 &6975013194245741253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10465,6 +10445,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pose2DMsg:
+    x: 0
+    y: 0
+    theta: 0
+  target: {fileID: 5700075243959902370}
+--- !u!114 &2906257514314374594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700075243959902370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf3b9790367af447bab71af4e7cac8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twist2DMsg:
     x: 0
     y: 0
     theta: 0
@@ -10485,32 +10482,6 @@ MonoBehaviour:
     max_health: 0
     health: 0
   damageable: {fileID: 9165369094385720545}
---- !u!114 &534042278384883654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5700075243959902370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 683225da07ad12b4683fc73ae8017441, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  navAgent: {fileID: 459913130992450825}
-  target: {fileID: 0}
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  arrivalThreshold: 1
 --- !u!195 &459913130992450825
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10524,15 +10495,15 @@ NavMeshAgent:
   m_Speed: 4
   m_Acceleration: 3
   avoidancePriority: 50
-  m_AngularSpeed: 100
-  m_StoppingDistance: 2
+  m_AngularSpeed: 200
+  m_StoppingDistance: 10
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 1
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 2
 --- !u!54 &1503011898088936018
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10560,6 +10531,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &8572794779186092560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700075243959902370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 912dd0564324d904abb8562bc75a76f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  botDifficulty: 2
+  speed: 4
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bulletPrefab: {fileID: 5778056209484332972, guid: fa6c3e66140b1024391c327dd337dc39,
+    type: 3}
+  agent: {fileID: 0}
+  shootVelocity: 35
+  turretRotationSpeed: 100
+  fireRate: 1
 --- !u!1 &6000127143375451224
 GameObject:
   m_ObjectHideFlags: 0

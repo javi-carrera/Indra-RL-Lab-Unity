@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RosMessageTypes.BuiltinInterfaces;
 
-using AgentType = UC2Agent;
+using AgentType = UC3Agent;
 using StateRequest = RosMessageTypes.InterfacesPkg.UC2EnvironmentStepRequest;
 using StateResponse = RosMessageTypes.InterfacesPkg.UC2EnvironmentStepResponse;
 using ResetRequest = RosMessageTypes.InterfacesPkg.UC2EnvironmentResetRequest;
