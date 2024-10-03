@@ -62,15 +62,9 @@ public class UC3Environment : Environment<
 
         // Choose (different) random spawn points for the agent and the target
         int agentSpawnPointIndex = Random.Range(0, spawnPoints.Count);
-        int targetSpawnPointIndex = Random.Range(0, spawnPoints.Count);
-
-        while (targetSpawnPointIndex == agentSpawnPointIndex) {
-            targetSpawnPointIndex = Random.Range(0, spawnPoints.Count);
-        }
 
         // Move the agent and the target to the spawn points
         agent.transform.SetPositionAndRotation(spawnPoints[agentSpawnPointIndex].position, spawnPoints[agentSpawnPointIndex].rotation);
-        target.transform.SetPositionAndRotation(spawnPoints[targetSpawnPointIndex].position, spawnPoints[targetSpawnPointIndex].rotation);
 
         // Reset the agent
         ResetResponse response = new() {

@@ -98,8 +98,9 @@ public class BotController : MonoBehaviour
         // Check if the agent is close enough to the current waypoint to consider it "arrived"
         if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance + 1.0f)
         {
-            // Increment the waypoint index
-            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Count;  // Loops back to the start when done
+            // Get new random waypoint index
+            int newWaypointIndex = Random.Range(0, waypoints.Count);
+            currentWaypointIndex = currentWaypointIndex == newWaypointIndex ? (currentWaypointIndex + 1) % waypoints.Count : newWaypointIndex;
 
             // Set the agent's destination to the next waypoint
             navAgent.SetDestination(waypoints[currentWaypointIndex].position);
