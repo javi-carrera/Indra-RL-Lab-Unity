@@ -11905,7 +11905,7 @@ MonoBehaviour:
   pause: 1
   sampleTime: 0.1
   fixedDeltaTime: 0.01
-  fixedUpdatesPerStep: 2
+  fixedUpdatesPerStep: 10
   agent: {fileID: 2058630021}
   target: {fileID: 240680524}
   spawnPoints:
@@ -13212,7 +13212,7 @@ MonoBehaviour:
   overrideReset: 0
   maxLinearVelocity: 5
   maxAngularVelocity: 5
-  maxTurretRotationSpeed: 100
+  maxTurretRotationSpeed: 300
   _pose2DSensor: {fileID: 2058630017}
   _twist2DSensor: {fileID: 2058630016}
   _healthSensor: {fileID: 2058630015}
