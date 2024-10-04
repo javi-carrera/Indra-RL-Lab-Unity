@@ -13090,11 +13090,11 @@ MonoBehaviour:
     range_max: 0
     ranges: []
     tags: 
-  positionOffset: {x: 0, y: 0, z: 0}
+  positionOffset: {x: 0, y: 0.1, z: 0}
   angleMin: 0
   angleMax: 360
   numRays: 20
-  rangeMin: 1
+  rangeMin: 0
   rangeMax: 10
   tagsData: []
   drawDebugRays: 1
