@@ -44,6 +44,7 @@ public class UC3Agent : Agent<
             _smartLidar2DSensor,
             _turret2DSensor,
             _targetPose2DSensor,
+            _targetTwist2DSensor,
             _targetHealthSensor,
         };
 
