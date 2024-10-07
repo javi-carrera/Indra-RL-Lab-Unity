@@ -35,7 +35,6 @@ public class UC3Agent : Agent<
 
     public override void Initialize() {
         
-        // Populate sensors list
         _sensors = new List<ISensor> {
             _pose2DSensor,
             _twist2DSensor,
@@ -46,21 +45,16 @@ public class UC3Agent : Agent<
             _targetHealthSensor,
         };
 
-        // Populate state actuators list
         _actuators = new List<IActuator> {
             _twistActuator,
             _turret2DActuator,
         };
 
-        // Initialize sensors
-        foreach (ISensor sensor in _sensors) {
+        foreach (ISensor sensor in _sensors)
             sensor.Initialize();
-        }
 
-        // Initialize state actuators
-        foreach (IActuator actuator in _actuators) {
+        foreach (IActuator actuator in _actuators)
             actuator.Initialize();
-        }
     }
 
 
@@ -79,15 +73,12 @@ public class UC3Agent : Agent<
 
         if (overrideAction) return;
 
-        // Set actuator data
         _twistActuator.SetActuatorData(action.tank.target_twist);
         _turret2DActuator.SetActuatorData(action.tank.turret_actuator);
-        
     }
 
     public override StateMsg State() {
 
-        // Get sensor data
         foreach (ISensor sensor in _sensors) {
             sensor.GetSensorData();
         }
@@ -100,14 +91,14 @@ public class UC3Agent : Agent<
             turret_sensor = _turret2DSensor.turret2DSensorMsg,
         };
 
-        EnemyTankStateMsg enemyTankStateMsg = new EnemyTankStateMsg {
+        TargetTankStateMsg targetTankStateMsg = new TargetTankStateMsg {
             pose = _targetPose2DSensor.pose2DMsg,
             health_info = _targetHealthSensor.healthInfoMsg,
         };
 
-        // Fill the response
         StateMsg state = new StateMsg {
             tank = tankStateMsg,
+            target_tank = targetTankStateMsg,
         };
 
         return state;
@@ -115,19 +106,12 @@ public class UC3Agent : Agent<
 
     public override StateMsg ResetAgent() {
         
-        // Override reset
-        // if (overrideReset) return State();
-        
-        // Reset sensors
         foreach (ISensor sensor in _sensors)
             sensor.ResetSensor();
-        
-        // Reset actuators
+
         _twistActuator.ResetActuator();
         _turret2DActuator.ResetActuator();
 
-        // Return the state
         return State();
-        
     }
 }

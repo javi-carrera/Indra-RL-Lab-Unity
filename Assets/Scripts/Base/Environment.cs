@@ -65,9 +65,8 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
     }
 
     protected void Update() {
-        if (Input.GetKeyDown(KeyCode.O)) {
+        if (Input.GetKeyDown(KeyCode.O))
             overrideReset = !overrideReset;
-        }
     }
 
     protected void FixedUpdate() {
@@ -125,7 +124,6 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
         InitializeEnvironment();
 
         _isInitialized = true;
-
     }
 
     private void InitialzeROS() {
@@ -153,8 +151,6 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
         Debug.Log($"Time scale: {_timeScale}");
     }
 
-    
-
     /// <summary>
     /// [TODO]
     /// </summary>
@@ -165,7 +161,7 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
         Action(request);
 
         _fixedUpdateCallsBeforeStep = 0;
-        while (!(_fixedUpdateCallsBeforeStep >= fixedUpdatesPerStep))
+        while (_fixedUpdateCallsBeforeStep < fixedUpdatesPerStep)
             await Task.Yield();
 
         TStepResponse response = State(requestReceivedTimestamp);
@@ -186,7 +182,6 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
 
         return response;
     }
-
 
     private void Pause() => Time.timeScale = 0.0f;
 

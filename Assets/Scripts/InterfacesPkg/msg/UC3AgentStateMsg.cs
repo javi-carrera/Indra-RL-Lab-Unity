@@ -14,15 +14,18 @@ namespace RosMessageTypes.InterfacesPkg
         public override string RosMessageName => k_RosMessageName;
 
         public TankStateMsg tank;
+        public TargetTankStateMsg target_tank;
 
         public UC3AgentStateMsg()
         {
             this.tank = new TankStateMsg();
+            this.target_tank = new TargetTankStateMsg();
         }
 
-        public UC3AgentStateMsg(TankStateMsg tank)
+        public UC3AgentStateMsg(TankStateMsg tank, TargetTankStateMsg target_tank)
         {
             this.tank = tank;
+            this.target_tank = target_tank;
         }
 
         public static UC3AgentStateMsg Deserialize(MessageDeserializer deserializer) => new UC3AgentStateMsg(deserializer);
@@ -30,17 +33,20 @@ namespace RosMessageTypes.InterfacesPkg
         private UC3AgentStateMsg(MessageDeserializer deserializer)
         {
             this.tank = TankStateMsg.Deserialize(deserializer);
+            this.target_tank = TargetTankStateMsg.Deserialize(deserializer);
         }
 
         public override void SerializeTo(MessageSerializer serializer)
         {
             serializer.Write(this.tank);
+            serializer.Write(this.target_tank);
         }
 
         public override string ToString()
         {
             return "UC3AgentStateMsg: " +
-            "\ntank: " + tank.ToString();
+            "\ntank: " + tank.ToString() +
+            "\ntarget_tank: " + target_tank.ToString();
         }
 
 #if UNITY_EDITOR

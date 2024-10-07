@@ -32,7 +32,6 @@ public class UC1Agent : Agent<
 
     public override void Initialize() {
         
-        // Populate sensors list
         _sensors = new List<ISensor> {
             _pose2DSensor,
             _twist2DSensor,
@@ -42,21 +41,15 @@ public class UC1Agent : Agent<
             _targetTriggerSensor
         };
 
-        // Populate state actuators list
         _actuators = new List<IActuator> {
             _twist2DActuator
         };
 
-        // Initialize sensors
-        foreach (ISensor sensor in _sensors) {
+        foreach (ISensor sensor in _sensors)
             sensor.Initialize();
-        }
 
-        // Initialize state actuators
-        foreach (IActuator actuator in _actuators) {
+        foreach (IActuator actuator in _actuators)
             actuator.Initialize();
-        }
-
     }
 
 
@@ -67,7 +60,6 @@ public class UC1Agent : Agent<
 
         _twist2DActuator.targetLinearVelocity = overridenLinearVelocity;
         _twist2DActuator.targetAngularVelocity = overridenAngularVelocity;
-
     }
 
 
@@ -75,19 +67,15 @@ public class UC1Agent : Agent<
 
         if (overrideAction) return;
 
-        // Set actuator data
         _twist2DActuator.SetActuatorData(action.tank.target_twist);
-        
     }
 
     public override StateMsg State() {
 
-        // Get sensor data
         foreach (ISensor sensor in _sensors) {
             sensor.GetSensorData();
         }
 
-        // Fill the response
         TankStateMsg tankStateMsg = new TankStateMsg {
             pose = _pose2DSensor.pose2DMsg,
             twist = _twist2DSensor.twist2DMsg,
@@ -106,18 +94,11 @@ public class UC1Agent : Agent<
 
     public override StateMsg ResetAgent() {
 
-        // Override reset
-        // if (overrideReset) return State();
-        
-        // Reset sensors
         foreach (ISensor sensor in _sensors)
             sensor.ResetSensor();
         
-        // Reset actuators
         _twist2DActuator.ResetActuator();
 
-        // Return the state
         return State();
-        
     }
 }

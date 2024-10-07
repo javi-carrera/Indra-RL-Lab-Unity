@@ -11231,7 +11231,17 @@ MonoBehaviour:
   overrideReset: 0
   agent: {fileID: 9132354452221323678}
   target: {fileID: 833635835}
-  spawnPoints: []
+  spawnPoints:
+  - {fileID: 2102213711}
+  - {fileID: 2117027441}
+  - {fileID: 1950128577}
+  - {fileID: 617917523}
+  - {fileID: 268598400}
+  - {fileID: 1595584640}
+  - {fileID: 1957986690}
+  - {fileID: 36096142}
+  - {fileID: 1267763444}
+  - {fileID: 316095043}
 --- !u!1 &1465143607
 GameObject:
   m_ObjectHideFlags: 0

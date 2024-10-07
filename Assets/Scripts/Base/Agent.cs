@@ -6,7 +6,6 @@ using System;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
 
-
 public interface IAgent {
     
     public List<ISensor> Sensors { get; }
@@ -30,19 +29,12 @@ public abstract class Agent<TActionMsg, TStateMsg> : MonoBehaviour, IAgent
 
     [Header("Debug")]
     public bool overrideAction;
-    // public bool overrideReset;
 
 
-    private void Update() {
-
-        if (Input.GetKeyDown(KeyCode.O)) {
-            overrideAction = !overrideAction;
-            // overrideReset = !overrideReset;
-        }
-        
+    private void FixedUpdate() {
+        if (Input.GetKeyDown(KeyCode.O)) overrideAction = !overrideAction;
         if (overrideAction) OverrideAction();
     }
-
 
     /// <summary>
     /// [TODO]

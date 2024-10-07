@@ -8,32 +8,32 @@ using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 namespace RosMessageTypes.InterfacesPkg
 {
     [Serializable]
-    public class EnemyTankStateMsg : Message
+    public class TargetTankStateMsg : Message
     {
-        public const string k_RosMessageName = "interfaces_pkg/EnemyTankState";
+        public const string k_RosMessageName = "interfaces_pkg/TargetTankState";
         public override string RosMessageName => k_RosMessageName;
 
         public Pose2DMsg pose;
         public Twist2DMsg twist;
         public HealthInfoMsg health_info;
 
-        public EnemyTankStateMsg()
+        public TargetTankStateMsg()
         {
             this.pose = new Pose2DMsg();
             this.twist = new Twist2DMsg();
             this.health_info = new HealthInfoMsg();
         }
 
-        public EnemyTankStateMsg(Pose2DMsg pose, Twist2DMsg twist, HealthInfoMsg health_info)
+        public TargetTankStateMsg(Pose2DMsg pose, Twist2DMsg twist, HealthInfoMsg health_info)
         {
             this.pose = pose;
             this.twist = twist;
             this.health_info = health_info;
         }
 
-        public static EnemyTankStateMsg Deserialize(MessageDeserializer deserializer) => new EnemyTankStateMsg(deserializer);
+        public static TargetTankStateMsg Deserialize(MessageDeserializer deserializer) => new TargetTankStateMsg(deserializer);
 
-        private EnemyTankStateMsg(MessageDeserializer deserializer)
+        private TargetTankStateMsg(MessageDeserializer deserializer)
         {
             this.pose = Pose2DMsg.Deserialize(deserializer);
             this.twist = Twist2DMsg.Deserialize(deserializer);
@@ -49,7 +49,7 @@ namespace RosMessageTypes.InterfacesPkg
 
         public override string ToString()
         {
-            return "EnemyTankStateMsg: " +
+            return "TargetTankStateMsg: " +
             "\npose: " + pose.ToString() +
             "\ntwist: " + twist.ToString() +
             "\nhealth_info: " + health_info.ToString();

@@ -6,6 +6,10 @@ public class BuildSettingsWindow : EditorWindow {
     private string buildPath = "../Indra-RL-Lab/unity/builds";
     private bool buildUC1 = true;
     private bool buildUC2 = true;
+    private bool buildUC3 = true;
+    private string uc1ScenePath = "Assets/Scenes/UC1Scene.unity";
+    private string uc2ScenePath = "Assets/Scenes/UC2Scene.unity";
+    private string uc3ScenePath = "Assets/Scenes/UC3Scene.unity";
 
     [MenuItem("Build/Build Settings")]
     public static void ShowWindow() {
@@ -33,30 +37,36 @@ public class BuildSettingsWindow : EditorWindow {
         GUILayout.Label("Scenes to Build:", EditorStyles.boldLabel);
         buildUC1 = EditorGUILayout.ToggleLeft("UC1 Scene", buildUC1);
         buildUC2 = EditorGUILayout.ToggleLeft("UC2 Scene", buildUC2);
+        buildUC3 = EditorGUILayout.ToggleLeft("UC3 Scene", buildUC3);
 
         GUILayout.Space(10);
 
         if (GUILayout.Button("Build Windows")){
             if (buildUC1) 
-                BuildManager.BuildWindows("Assets/Scenes/UC1Scene.unity", buildPath, "uc1");
+                BuildManager.BuildWindows(uc1ScenePath, buildPath, "uc1");
             if (buildUC2)
-                BuildManager.BuildWindows("Assets/Scenes/UC2Scene.unity", buildPath, "uc2");
+                BuildManager.BuildWindows(uc2ScenePath, buildPath, "uc2");
+            if (buildUC3)
+                BuildManager.BuildWindows(uc3ScenePath, buildPath, "uc3");
         }
 
         if (GUILayout.Button("Build Linux")) {
             if (buildUC1)
-                BuildManager.BuildLinux("Assets/Scenes/UC1Scene.unity", buildPath, "uc1");
+                BuildManager.BuildLinux(uc1ScenePath, buildPath, "uc1");
             if (buildUC2)
-                BuildManager.BuildLinux("Assets/Scenes/UC2Scene.unity", buildPath, "uc2");
+                BuildManager.BuildLinux(uc2ScenePath, buildPath, "uc2");
+            if (buildUC3)
+                BuildManager.BuildLinux(uc3ScenePath, buildPath, "uc3");
         }
 
         if (GUILayout.Button("Build All Platforms")) {
             if (buildUC1)
-                BuildManager.BuildAll("Assets/Scenes/UC1Scene.unity", buildPath, "uc1");
+                BuildManager.BuildAll(uc1ScenePath, buildPath, "uc1");
             if (buildUC2)
-                BuildManager.BuildAll("Assets/Scenes/UC2Scene.unity", buildPath, "uc2");
+                BuildManager.BuildAll(uc2ScenePath, buildPath, "uc2");
+            if (buildUC3)
+                BuildManager.BuildAll(uc3ScenePath, buildPath, "uc3");
         }
-
     }
 }
 

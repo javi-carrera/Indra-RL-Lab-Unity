@@ -14,18 +14,18 @@ namespace RosMessageTypes.InterfacesPkg
         public override string RosMessageName => k_RosMessageName;
 
         public TankStateMsg tank;
-        public EnemyTankStateMsg enemy_tank;
+        public TargetTankStateMsg target_tank;
 
         public UC2AgentStateMsg()
         {
             this.tank = new TankStateMsg();
-            this.enemy_tank = new EnemyTankStateMsg();
+            this.target_tank = new TargetTankStateMsg();
         }
 
-        public UC2AgentStateMsg(TankStateMsg tank, EnemyTankStateMsg enemy_tank)
+        public UC2AgentStateMsg(TankStateMsg tank, TargetTankStateMsg target_tank)
         {
             this.tank = tank;
-            this.enemy_tank = enemy_tank;
+            this.target_tank = target_tank;
         }
 
         public static UC2AgentStateMsg Deserialize(MessageDeserializer deserializer) => new UC2AgentStateMsg(deserializer);
@@ -33,20 +33,20 @@ namespace RosMessageTypes.InterfacesPkg
         private UC2AgentStateMsg(MessageDeserializer deserializer)
         {
             this.tank = TankStateMsg.Deserialize(deserializer);
-            this.enemy_tank = EnemyTankStateMsg.Deserialize(deserializer);
+            this.target_tank = TargetTankStateMsg.Deserialize(deserializer);
         }
 
         public override void SerializeTo(MessageSerializer serializer)
         {
             serializer.Write(this.tank);
-            serializer.Write(this.enemy_tank);
+            serializer.Write(this.target_tank);
         }
 
         public override string ToString()
         {
             return "UC2AgentStateMsg: " +
             "\ntank: " + tank.ToString() +
-            "\nenemy_tank: " + enemy_tank.ToString();
+            "\ntarget_tank: " + target_tank.ToString();
         }
 
 #if UNITY_EDITOR
