@@ -5,29 +5,32 @@ using RosMessageTypes.InterfacesPkg;
 using System;
 
 
-using ActionMsg = RosMessageTypes.InterfacesPkg.UC1AgentActionMsg;
-using StateMsg = RosMessageTypes.InterfacesPkg.UC1AgentStateMsg;
+using ActionMsg = RosMessageTypes.InterfacesPkg.UC3AgentActionMsg;
+using StateMsg = RosMessageTypes.InterfacesPkg.UC3AgentStateMsg;
 
 
-public class UC1Agent : Agent<
+public class UC3Agent : Agent<
     ActionMsg,
     StateMsg> {
-
+    
     public float maxLinearVelocity;
     public float maxAngularVelocity;
+    public float maxTurretRotationSpeed;
 
     [Header("Tank Sensors")]
     [SerializeField] private Pose2DSensor _pose2DSensor;
     [SerializeField] private Twist2DSensor _twist2DSensor;
     [SerializeField] private HealthSensor _healthSensor;
     [SerializeField] private SmartLidar2DSensor _smartLidar2DSensor;
+    [SerializeField] private Turret2DSensor _turret2DSensor;
 
     [Header("Target Sensors")]
     [SerializeField] private Pose2DSensor _targetPose2DSensor;
-    [SerializeField] private TriggerSensor _targetTriggerSensor;
+    [SerializeField] private HealthSensor _targetHealthSensor;
 
     [Header("Tank Actuators")]
-    [SerializeField] private Twist2DActuator _twist2DActuator;
+    [SerializeField] private Twist2DActuator _twistActuator;
+    [SerializeField] private Turret2DActuator _turret2DActuator;
 
 
     public override void Initialize() {
@@ -36,15 +39,17 @@ public class UC1Agent : Agent<
         _sensors = new List<ISensor> {
             _pose2DSensor,
             _twist2DSensor,
-            _smartLidar2DSensor,
             _healthSensor,
+            _smartLidar2DSensor,
+            _turret2DSensor,
             _targetPose2DSensor,
-            _targetTriggerSensor
+            _targetHealthSensor,
         };
 
         // Populate state actuators list
         _actuators = new List<IActuator> {
-            _twist2DActuator
+            _twistActuator,
+            _turret2DActuator,
         };
 
         // Initialize sensors
@@ -56,18 +61,17 @@ public class UC1Agent : Agent<
         foreach (IActuator actuator in _actuators) {
             actuator.Initialize();
         }
-
     }
 
 
     public override void OverrideAction() {
-        
-        Vector3 overridenLinearVelocity = maxLinearVelocity * new Vector3(0, 0, Input.GetAxis("Vertical"));
-        Vector3 overridenAngularVelocity = maxAngularVelocity * new Vector3(0, Input.GetAxis("Horizontal"), 0);
 
-        _twist2DActuator.targetLinearVelocity = overridenLinearVelocity;
-        _twist2DActuator.targetAngularVelocity = overridenAngularVelocity;
+        _twistActuator.targetLinearVelocity = maxLinearVelocity * new Vector3(0, 0, Input.GetAxis("Vertical"));
+        _twistActuator.targetAngularVelocity = maxAngularVelocity * new Vector3(0, Input.GetAxis("Horizontal"), 0);
+        _turret2DActuator.rotationSpeed = maxTurretRotationSpeed * Input.GetAxis("Horizontal2");
 
+        if (Input.GetButton("Fire1")) _turret2DActuator.fire = true;
+        else _turret2DActuator.fire = false;
     }
 
 
@@ -76,7 +80,8 @@ public class UC1Agent : Agent<
         if (overrideAction) return;
 
         // Set actuator data
-        _twist2DActuator.SetActuatorData(action.tank.target_twist);
+        _twistActuator.SetActuatorData(action.tank.target_twist);
+        _turret2DActuator.SetActuatorData(action.tank.turret_actuator);
         
     }
 
@@ -87,25 +92,29 @@ public class UC1Agent : Agent<
             sensor.GetSensorData();
         }
 
-        // Fill the response
         TankStateMsg tankStateMsg = new TankStateMsg {
             pose = _pose2DSensor.pose2DMsg,
             twist = _twist2DSensor.twist2DMsg,
             smart_laser_scan = _smartLidar2DSensor.smartLaserScan2DMsg,
-            health_info = _healthSensor.healthInfoMsg
+            health_info = _healthSensor.healthInfoMsg,
+            turret_sensor = _turret2DSensor.turret2DSensorMsg,
         };
 
+        EnemyTankStateMsg enemyTankStateMsg = new EnemyTankStateMsg {
+            pose = _targetPose2DSensor.pose2DMsg,
+            health_info = _targetHealthSensor.healthInfoMsg,
+        };
+
+        // Fill the response
         StateMsg state = new StateMsg {
             tank = tankStateMsg,
-            target_pose = _targetPose2DSensor.pose2DMsg,
-            target_trigger_sensor = _targetTriggerSensor.triggerSensorMsg
         };
 
         return state;
     }
 
     public override StateMsg ResetAgent() {
-
+        
         // Override reset
         // if (overrideReset) return State();
         
@@ -114,7 +123,8 @@ public class UC1Agent : Agent<
             sensor.ResetSensor();
         
         // Reset actuators
-        _twist2DActuator.ResetActuator();
+        _twistActuator.ResetActuator();
+        _turret2DActuator.ResetActuator();
 
         // Return the state
         return State();

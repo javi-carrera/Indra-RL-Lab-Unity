@@ -100,11 +100,15 @@ public class UC2Agent : Agent<
             turret_sensor = _turret2DSensor.turret2DSensorMsg,
         };
 
+        EnemyTankStateMsg enemyTankStateMsg = new EnemyTankStateMsg {
+            pose = _targetPose2DSensor.pose2DMsg,
+            health_info = _targetHealthSensor.healthInfoMsg,
+        };
+
         // Fill the response
         StateMsg state = new StateMsg {
             tank = tankStateMsg,
-            target_pose = _targetPose2DSensor.pose2DMsg,
-            target_health_info = _targetHealthSensor.healthInfoMsg,
+            enemy_tank = enemyTankStateMsg,
         };
 
         return state;
@@ -113,7 +117,7 @@ public class UC2Agent : Agent<
     public override StateMsg ResetAgent() {
         
         // Override reset
-        if (overrideReset) return State();
+        // if (overrideReset) return State();
         
         // Reset sensors
         foreach (ISensor sensor in _sensors)

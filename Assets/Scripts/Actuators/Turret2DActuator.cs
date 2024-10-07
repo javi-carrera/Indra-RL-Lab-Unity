@@ -37,7 +37,7 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
     public override void SetActuatorData(Turret2DActuatorMsg msg) {
 
         // Convert from ROS message to Unity data
-        rotationSpeed = msg.target_angle;
+        rotationSpeed = msg.rotation_speed;
         fire = msg.fire;
     }
 
@@ -57,7 +57,7 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
     protected override void UpdateActuator() {
 
         // Rotate the turret with rotation speed
-        target.transform.Rotate(Vector3.up, -rotationSpeed * Time.fixedDeltaTime);
+        target.transform.Rotate(Vector3.up, -Mathf.Rad2Deg * rotationSpeed * Time.fixedDeltaTime);
         currentAngle = target.localEulerAngles.y;
 
         // Calculate the velocity of the shooting point

@@ -61,6 +61,13 @@ public class UC2Environment : Environment<
 
     protected override ResetResponse ResetEnvironment(ResetRequest request, TimeMsg requestReceivedTimestamp) {
 
+        // Override reset
+        if (overrideReset) return new ResetResponse{
+            state = agent.State(),
+            request_received_timestamp = requestReceivedTimestamp,
+            response_sent_timestamp = GetCurrentTimestamp(),
+        };
+
         // Choose (different) random spawn points for the agent and the target
         int agentSpawnPointIndex = Random.Range(0, spawnPoints.Count);
         int targetSpawnPointIndex = Random.Range(0, spawnPoints.Count);

@@ -30,14 +30,14 @@ public abstract class Agent<TActionMsg, TStateMsg> : MonoBehaviour, IAgent
 
     [Header("Debug")]
     public bool overrideAction;
-    public bool overrideReset;
+    // public bool overrideReset;
 
 
     private void Update() {
 
         if (Input.GetKeyDown(KeyCode.O)) {
             overrideAction = !overrideAction;
-            overrideReset = !overrideReset;
+            // overrideReset = !overrideReset;
         }
         
         if (overrideAction) OverrideAction();

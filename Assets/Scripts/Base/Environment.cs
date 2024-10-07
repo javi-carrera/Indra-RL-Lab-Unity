@@ -51,6 +51,9 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
     private float _timeScale;
     private int _fixedUpdateCallsBeforeStep;
 
+    [Header("Debug")]
+    public bool overrideReset;
+
 
     [Header("Agent")]
     protected List<IAgent> _agents;
@@ -59,6 +62,12 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
     protected void Start() {
         GetCommandLineArguments();
         if (!_isInitialized) Initialize();
+    }
+
+    protected void Update() {
+        if (Input.GetKeyDown(KeyCode.O)) {
+            overrideReset = !overrideReset;
+        }
     }
 
     protected void FixedUpdate() {

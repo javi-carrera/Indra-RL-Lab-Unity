@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using RosMessageTypes.BuiltinInterfaces;
 
-using AgentType = UC1Agent;
-using StateRequest = RosMessageTypes.InterfacesPkg.UC1EnvironmentStepRequest;
-using StateResponse = RosMessageTypes.InterfacesPkg.UC1EnvironmentStepResponse;
-using ResetRequest = RosMessageTypes.InterfacesPkg.UC1EnvironmentResetRequest;
-using ResetResponse = RosMessageTypes.InterfacesPkg.UC1EnvironmentResetResponse;
+using AgentType = UC3Agent;
+using StateRequest = RosMessageTypes.InterfacesPkg.UC3EnvironmentStepRequest;
+using StateResponse = RosMessageTypes.InterfacesPkg.UC3EnvironmentStepResponse;
+using ResetRequest = RosMessageTypes.InterfacesPkg.UC3EnvironmentResetRequest;
+using ResetResponse = RosMessageTypes.InterfacesPkg.UC3EnvironmentResetResponse;
 
 
-
-public class UC1Environment : Environment<
+public class UC3Environment : Environment<
     StateRequest,
     StateResponse,
     ResetRequest,
     ResetResponse> {
     
-    [Header("UC1 Environment Settings")]
+    [Header("UC3 Environment Settings")]
     public AgentType agent;
-    public GameObject target;
+    public AgentType target;
     public List<Transform> spawnPoints;
 
 
@@ -27,7 +26,8 @@ public class UC1Environment : Environment<
 
         // Append the agent to the list
         _agents = new List<IAgent> {
-            agent
+            agent,
+            target,
         };
 
         // Initialize agents list
@@ -39,21 +39,25 @@ public class UC1Environment : Environment<
 
 
     protected override void Action(StateRequest request) {
-
-        // Send the action to the agent
         agent.Action(request.action);
-        
+        target.Action(request.target_action);
     }
 
 
     protected override StateResponse State(TimeMsg requestReceivedTimestamp) {
 
+        Debug.Log("State requested");
+
+
         // Get the state from the agent
         StateResponse response = new() {
             state = agent.State(),
+            target_state = target.State(),
             request_received_timestamp = requestReceivedTimestamp,
             response_sent_timestamp = GetCurrentTimestamp(),
         };
+
+        Debug.Log("State sent");
 
         return response;
     }
@@ -61,9 +65,12 @@ public class UC1Environment : Environment<
 
     protected override ResetResponse ResetEnvironment(ResetRequest request, TimeMsg requestReceivedTimestamp) {
 
+        Debug.Log("Reset requested");
+
         // Override reset
-        if(overrideReset) return new ResetResponse{
+        if (overrideReset) return new ResetResponse{
             state = agent.State(),
+            target_state = target.State(),
             request_received_timestamp = requestReceivedTimestamp,
             response_sent_timestamp = GetCurrentTimestamp(),
         };
@@ -83,9 +90,12 @@ public class UC1Environment : Environment<
         // Reset the agent
         ResetResponse response = new() {
             state = agent.ResetAgent(),
+            target_state = target.ResetAgent(),
             request_received_timestamp = requestReceivedTimestamp,
             response_sent_timestamp = GetCurrentTimestamp(),
         };
+
+        Debug.Log("Reset sent");
 
         return response;
     }
