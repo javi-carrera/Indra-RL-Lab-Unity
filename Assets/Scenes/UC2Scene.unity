@@ -1240,7 +1240,7 @@ MonoBehaviour:
   shootingPoint: {fileID: 9115559863058471719}
   bulletPrefab: {fileID: 5778056209484332972, guid: fa6c3e66140b1024391c327dd337dc39,
     type: 3}
-  shootVelocity: 35
+  range: 20
   fireRate: 2
   rotationSpeed: 100
   currentAngle: 0

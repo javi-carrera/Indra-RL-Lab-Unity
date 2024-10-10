@@ -11,7 +11,7 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
     public Transform target;
     public Transform shootingPoint;
     public GameObject bulletPrefab;
-    public float shootVelocity;
+    public float range;
     public float fireRate;
 
     [HideInInspector] public float rotationSpeed;
@@ -22,33 +22,24 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
 
     private Vector3 _previousShootingPointPosition;
     private Vector3 _shootingPointVelocity;
+    private float _shootVelocity;
     
     
-
-
-
     public override void Initialize() {
-
-        // Reset the actuator
         ResetActuator();
-
     }
 
     public override void SetActuatorData(Turret2DActuatorMsg msg) {
-
-        // Convert from ROS message to Unity data
         rotationSpeed = msg.rotation_speed;
         fire = msg.fire;
     }
 
     public override void ResetActuator() {
 
-        // Reset ROS message data
         rotationSpeed = 0.0f;
         fire = false;
         hasFired = false;
 
-        // Reset velocity and cooldown
         _previousShootingPointPosition = shootingPoint.position;
         _shootingPointVelocity = Vector3.zero;
         cooldown = 1.0f / fireRate;
@@ -56,15 +47,12 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
 
     protected override void UpdateActuator() {
 
-        // Rotate the turret with rotation speed
         target.transform.Rotate(Vector3.up, -Mathf.Rad2Deg * rotationSpeed * Time.fixedDeltaTime);
         currentAngle = target.localEulerAngles.y;
 
-        // Calculate the velocity of the shooting point
         _shootingPointVelocity = (shootingPoint.position - _previousShootingPointPosition) / Time.fixedDeltaTime;
         _previousShootingPointPosition = shootingPoint.position;
 
-        // Fire the bullet
         cooldown = Mathf.Max(0, cooldown - Time.fixedDeltaTime);
         if (fire && cooldown <= 0) {
             cooldown = 1.0f / fireRate;
@@ -75,20 +63,13 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
 
     private void Shoot() {
         
-        // GameObject bullet = _objectPooler.GetPooledObject();
         GameObject bullet = Instantiate(bulletPrefab);
-        
-        if (bullet != null) {
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
-            // Get the rigidbody of the bullet
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            
-            // Set the position and rotation of the bullet
-            bullet.transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
+        bullet.transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
 
-            // Set the velocity of the bullet
-            rb.AddForce(_shootingPointVelocity + shootVelocity * shootingPoint.forward, ForceMode.VelocityChange);
+        _shootVelocity = range / Mathf.Sqrt(2 * shootingPoint.position.y / Mathf.Abs(Physics.gravity.y));
 
-        }
+        rb.AddForce(_shootingPointVelocity + _shootVelocity * shootingPoint.forward, ForceMode.VelocityChange);
     }
 }

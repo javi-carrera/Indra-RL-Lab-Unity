@@ -10716,7 +10716,7 @@ MonoBehaviour:
   shootingPoint: {fileID: 1261166018}
   bulletPrefab: {fileID: 5778056209484332972, guid: fa6c3e66140b1024391c327dd337dc39,
     type: 3}
-  shootVelocity: 35
+  range: 20
   fireRate: 2
   rotationSpeed: 100
   currentAngle: 0
@@ -11227,7 +11227,7 @@ MonoBehaviour:
   pause: 1
   sampleTime: 0.1
   fixedDeltaTime: 0.01
-  fixedUpdatesPerStep: 2
+  fixedUpdatesPerStep: 10
   overrideReset: 0
   agent: {fileID: 9132354452221323678}
   target: {fileID: 833635835}
@@ -11941,7 +11941,7 @@ MonoBehaviour:
   shootingPoint: {fileID: 9115559863058471719}
   bulletPrefab: {fileID: 5778056209484332972, guid: fa6c3e66140b1024391c327dd337dc39,
     type: 3}
-  shootVelocity: 35
+  range: 20
   fireRate: 2
   rotationSpeed: 100
   currentAngle: 0
