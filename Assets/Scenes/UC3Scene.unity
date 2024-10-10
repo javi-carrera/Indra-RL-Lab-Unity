@@ -11904,8 +11904,8 @@ MonoBehaviour:
   rosPort: 10000
   pause: 1
   sampleTime: 0.1
-  fixedDeltaTime: 0.01
-  fixedUpdatesPerStep: 10
+  fixedDeltaTime: 0.02
+  fixedUpdatesPerStep: 2
   agent: {fileID: 2058630021}
   target: {fileID: 240680524}
   spawnPoints:
@@ -12958,6 +12958,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2058630009}
   - component: {fileID: 2058630020}
+  - component: {fileID: 2058630022}
   - component: {fileID: 2058630019}
   - component: {fileID: 2058630010}
   - component: {fileID: 2058630021}
@@ -13165,7 +13166,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.5, y: 1.7, z: 1.6}
   m_Center: {x: 0, y: 0.85, z: 0}
@@ -13223,6 +13224,29 @@ MonoBehaviour:
   _targetHealthSensor: {fileID: 240680550}
   _twistActuator: {fileID: 2058630012}
   _turret2DActuator: {fileID: 2058630011}
+--- !u!136 &2058630022
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058630008}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.9
+  m_Height: 2.5
+  m_Direction: 2
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &2072475983
 GameObject:
   m_ObjectHideFlags: 0
