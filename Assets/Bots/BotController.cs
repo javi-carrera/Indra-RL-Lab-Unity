@@ -21,6 +21,7 @@ public class BotController : MonoBehaviour
     public float range;
     public float turretRotationSpeed;
     public float fireRate;
+    public float angleError;
     private float _shootVelocity;
     private float _cooldown;
     private float maxbulletDistance;
@@ -97,7 +98,7 @@ public class BotController : MonoBehaviour
 
         if (InterceptionDirection(a, b, vA, sB, out var prediction)){
             var angle = Vector2.SignedAngle(Vector2.up, prediction);
-            Quaternion lookRotation = Quaternion.Euler(0, -angle, 0);
+            Quaternion lookRotation = Quaternion.Euler(0, -(angle + angleError), 0);
             turretBase.rotation = Quaternion.Slerp(turretBase.rotation, lookRotation, Time.fixedDeltaTime * turretRotationSpeed * Mathf.Rad2Deg);
             if (_cooldown <= 0.0f) {
                 Shoot();
