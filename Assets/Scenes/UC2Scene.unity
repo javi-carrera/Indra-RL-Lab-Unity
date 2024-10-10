@@ -607,6 +607,16 @@ PrefabInstance:
       objectReference: {fileID: 6981644825896775104}
     - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
         type: 3}
+      propertyPath: speed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
+        type: 3}
+      propertyPath: angleError
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
+        type: 3}
       propertyPath: waypoints.Array.data[0]
       value: 
       objectReference: {fileID: 1646550231}
