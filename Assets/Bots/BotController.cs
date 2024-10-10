@@ -42,10 +42,12 @@ public class BotController : MonoBehaviour
     private void FixedUpdate()
     {
         // Bot movement behavior
-        if (followWaypoints){
-            GoToNextWaypoint();
-        }else{
-            navAgent.SetDestination(agent.transform.position);
+        if (speed > 0.0f){
+            if (followWaypoints){
+                GoToNextWaypoint();
+            }else{
+                navAgent.SetDestination(agent.transform.position);
+            }
         }
 
         if (canShoot)
@@ -124,7 +126,6 @@ public class BotController : MonoBehaviour
 
             // Set the velocity of the bullet
             rb.AddForce(_shootVelocity * shootingPoint.forward, ForceMode.VelocityChange);
-
         }
     }
 
