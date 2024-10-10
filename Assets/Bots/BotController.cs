@@ -43,6 +43,7 @@ public class BotController : MonoBehaviour
     {
         _cooldown = 1.0f / fireRate;
         navAgent = gameObject.transform.GetComponent<NavMeshAgent>();
+        navAgent.speed = speed;
         agent_rigidbody = agent.GetComponent<Rigidbody>();
         turretBase = gameObject.transform.Find("TankRenderers/TankTurret").transform;
         shootingPoint = turretBase.transform.Find("ShootingPoint").transform;
