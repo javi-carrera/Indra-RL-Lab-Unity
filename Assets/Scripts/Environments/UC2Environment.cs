@@ -46,7 +46,6 @@ public class UC2Environment : Environment<
 
         return response;
     }
-
     protected override ResetResponse ResetEnvironment(ResetRequest request, TimeMsg requestReceivedTimestamp) {
 
         if (overrideReset) return new ResetResponse{
