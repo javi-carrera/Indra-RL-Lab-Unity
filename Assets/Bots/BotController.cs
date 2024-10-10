@@ -1,24 +1,15 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-public enum BotDifficulty
-{
-    Easy,      // Level 1: Move through waypoints only
-    Medium,    // Level 2: Move through waypoints and fire
-    Hard       // Level 3: Move through waypoints, fire, and be faster
-}
 
 public class BotController : MonoBehaviour
 {
     // Dropdown in the Inspector for selecting difficulty
-    public BotDifficulty botDifficulty;
-
     [Header("Bot Movement")]
     // Waypoints for the bot to move through
     public float speed = 2f;
     public List<Transform> waypoints;
-    private bool followWaypoints;
+    public bool followWaypoints;
     private int currentWaypointIndex = 0;
 
 
@@ -26,12 +17,11 @@ public class BotController : MonoBehaviour
     // Reference to shooting script or functionality
     public GameObject bulletPrefab;
     public GameObject agent;
-    public float shootVelocity = 25.0f;
-    public float turretRotationSpeed = 100.0f;
-    public float fireRate = 1.0f;
-    
-
-    private bool canShoot;
+    public bool canShoot;
+    public float range;
+    public float turretRotationSpeed;
+    public float fireRate;
+    private float _shootVelocity;
     private float _cooldown;
     private float maxbulletDistance;
     private Rigidbody agent_rigidbody;
@@ -39,21 +29,18 @@ public class BotController : MonoBehaviour
     private Transform shootingPoint;
     private NavMeshAgent navAgent;
 
-    void Start()
+    private void Start()
     {
         _cooldown = 1.0f / fireRate;
-        navAgent = gameObject.transform.GetComponent<NavMeshAgent>();
+        navAgent = transform.GetComponent<NavMeshAgent>();
         navAgent.speed = speed;
         agent_rigidbody = agent.GetComponent<Rigidbody>();
-        turretBase = gameObject.transform.Find("TankRenderers/TankTurret").transform;
+        turretBase = transform.Find("TankRenderers/TankTurret").transform;
         shootingPoint = turretBase.transform.Find("ShootingPoint").transform;
-
-        // Initialize bot behavior based on the selected difficulty
-        CalculateMaxbulletDistance();
-        SetBotDifficulty();
+        _shootVelocity = range / Mathf.Sqrt(2 * shootingPoint.position.y / Mathf.Abs(Physics.gravity.y));
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         // Bot movement behavior
         if (followWaypoints){
@@ -65,31 +52,6 @@ public class BotController : MonoBehaviour
         if (canShoot)
         {
             TryShoot();
-        }
-    }
-
-    // Set bot behavior based on difficulty level
-    void SetBotDifficulty()
-    {
-        switch (botDifficulty)
-        {
-            case BotDifficulty.Easy:
-                // Easy: Only move between waypoints, no shooting
-                followWaypoints = true;
-                canShoot = false;
-                break;
-
-            case BotDifficulty.Medium:
-                // Medium: Move and shoot
-                followWaypoints = true;
-                canShoot = true;
-                break;
-
-            case BotDifficulty.Hard:
-                // Hard: Move, shoot, and faster
-                followWaypoints = false;
-                canShoot = true;
-                break;
         }
     }
 
@@ -131,12 +93,12 @@ public class BotController : MonoBehaviour
         Vector2 a = new Vector2(agent.transform.position.x, agent.transform.position.z);
         Vector2 b = new Vector2(shootingPoint.position.x, shootingPoint.position.z);
         Vector2 vA = new Vector2(agent_rigidbody.velocity.x, agent_rigidbody.velocity.z);
-        float sB = shootVelocity;
+        float sB = _shootVelocity;
 
         if (InterceptionDirection(a, b, vA, sB, out var prediction)){
             var angle = Vector2.SignedAngle(Vector2.up, prediction);
             Quaternion lookRotation = Quaternion.Euler(0, -angle, 0);
-            turretBase.rotation = Quaternion.Slerp(turretBase.rotation, lookRotation, Time.fixedDeltaTime * turretRotationSpeed);
+            turretBase.rotation = Quaternion.Slerp(turretBase.rotation, lookRotation, Time.fixedDeltaTime * turretRotationSpeed * Mathf.Rad2Deg);
             if (_cooldown <= 0.0f) {
                 Shoot();
                 _cooldown = 1.0f / fireRate;
@@ -157,7 +119,7 @@ public class BotController : MonoBehaviour
             bullet.transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
 
             // Set the velocity of the bullet
-            rb.AddForce(shootVelocity * shootingPoint.forward, ForceMode.VelocityChange);
+            rb.AddForce(_shootVelocity * shootingPoint.forward, ForceMode.VelocityChange);
 
         }
     }
@@ -195,13 +157,5 @@ public class BotController : MonoBehaviour
             root2 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
             return 2;
         }
-    }
-    private void CalculateMaxbulletDistance() {
-        float height = shootingPoint.position.y;
-        // Debug.Log(height);
-        float v_x = shootVelocity;
-        float time = - 2 * height / Physics.gravity.y;  
-        time = Mathf.Sqrt(time); 
-        maxbulletDistance = v_x * time;
     }
 }

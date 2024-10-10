@@ -26,6 +26,8 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
     
     
     public override void Initialize() {
+        _shootVelocity = range / Mathf.Sqrt(2 * shootingPoint.position.y / Mathf.Abs(Physics.gravity.y));
+        
         ResetActuator();
     }
 
@@ -67,9 +69,6 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
         bullet.transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
-
-        _shootVelocity = range / Mathf.Sqrt(2 * shootingPoint.position.y / Mathf.Abs(Physics.gravity.y));
-
         rb.AddForce(_shootingPointVelocity + _shootVelocity * shootingPoint.forward, ForceMode.VelocityChange);
     }
 }

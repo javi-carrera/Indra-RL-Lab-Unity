@@ -15,17 +15,29 @@ namespace RosMessageTypes.InterfacesPkg
 
         public BuiltinInterfaces.TimeMsg request_sent_timestamp;
         public bool reset;
+        public float speed;
+        public bool can_shoot;
+        public bool follow_waypoints;
+        public float fire_rate;
 
         public UC2EnvironmentResetRequest()
         {
             this.request_sent_timestamp = new BuiltinInterfaces.TimeMsg();
             this.reset = false;
+            this.speed = 0.0f;
+            this.can_shoot = false;
+            this.follow_waypoints = false;
+            this.fire_rate = 0.0f;
         }
 
-        public UC2EnvironmentResetRequest(BuiltinInterfaces.TimeMsg request_sent_timestamp, bool reset)
+        public UC2EnvironmentResetRequest(BuiltinInterfaces.TimeMsg request_sent_timestamp, bool reset, float speed, bool can_shoot, bool follow_waypoints, float fire_rate)
         {
             this.request_sent_timestamp = request_sent_timestamp;
             this.reset = reset;
+            this.speed = speed;
+            this.can_shoot = can_shoot;
+            this.follow_waypoints = follow_waypoints;
+            this.fire_rate = fire_rate;
         }
 
         public static UC2EnvironmentResetRequest Deserialize(MessageDeserializer deserializer) => new UC2EnvironmentResetRequest(deserializer);
@@ -34,19 +46,31 @@ namespace RosMessageTypes.InterfacesPkg
         {
             this.request_sent_timestamp = BuiltinInterfaces.TimeMsg.Deserialize(deserializer);
             deserializer.Read(out this.reset);
+            deserializer.Read(out this.speed);
+            deserializer.Read(out this.can_shoot);
+            deserializer.Read(out this.follow_waypoints);
+            deserializer.Read(out this.fire_rate);
         }
 
         public override void SerializeTo(MessageSerializer serializer)
         {
             serializer.Write(this.request_sent_timestamp);
             serializer.Write(this.reset);
+            serializer.Write(this.speed);
+            serializer.Write(this.can_shoot);
+            serializer.Write(this.follow_waypoints);
+            serializer.Write(this.fire_rate);
         }
 
         public override string ToString()
         {
             return "UC2EnvironmentResetRequest: " +
             "\nrequest_sent_timestamp: " + request_sent_timestamp.ToString() +
-            "\nreset: " + reset.ToString();
+            "\nreset: " + reset.ToString() +
+            "\nspeed: " + speed.ToString() +
+            "\ncan_shoot: " + can_shoot.ToString() +
+            "\nfollow_waypoints: " + follow_waypoints.ToString() +
+            "\nfire_rate: " + fire_rate.ToString();
         }
 
 #if UNITY_EDITOR

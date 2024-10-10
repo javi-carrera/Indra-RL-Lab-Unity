@@ -20,6 +20,7 @@ public class UC2Environment : Environment<
     public AgentType agent;
     public GameObject target;
     public List<Transform> spawnPoints;
+    private BotController botController;
 
 
     protected override void InitializeEnvironment() {
@@ -30,6 +31,8 @@ public class UC2Environment : Environment<
 
         foreach (IAgent agent in _agents)
             agent.Initialize();
+
+        botController = target.GetComponent<BotController>();
     }
 
     protected override void Action(StateRequest request) {
@@ -63,6 +66,12 @@ public class UC2Environment : Environment<
 
         agent.transform.SetPositionAndRotation(spawnPoints[agentSpawnPointIndex].position, spawnPoints[agentSpawnPointIndex].rotation);
         target.transform.SetPositionAndRotation(spawnPoints[targetSpawnPointIndex].position, spawnPoints[targetSpawnPointIndex].rotation);
+
+        botController.speed = request.speed;
+        botController.fireRate = request.fire_rate; 
+        botController.canShoot = request.can_shoot;
+        botController.followWaypoints = request.follow_waypoints;
+        
 
         ResetResponse response = new() {
             state = agent.ResetAgent(),

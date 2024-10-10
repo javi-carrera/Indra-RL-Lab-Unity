@@ -607,8 +607,23 @@ PrefabInstance:
       objectReference: {fileID: 6981644825896775104}
     - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
         type: 3}
+      propertyPath: range
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
+        type: 3}
       propertyPath: speed
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
+        type: 3}
+      propertyPath: followWaypoints
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
+        type: 3}
+      propertyPath: turretRotationSpeed
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
         type: 3}
@@ -1617,7 +1632,7 @@ MonoBehaviour:
   pause: 1
   sampleTime: 0.1
   fixedDeltaTime: 0.01
-  fixedUpdatesPerStep: 5
+  fixedUpdatesPerStep: 2
   overrideReset: 0
   agent: {fileID: 1233470391474183608}
   target: {fileID: 682446764}
