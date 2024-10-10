@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-
 public class BotController : MonoBehaviour
 {
     // Dropdown in the Inspector for selecting difficulty
@@ -73,13 +72,19 @@ public class BotController : MonoBehaviour
     private void TryShoot(){
         _cooldown -= Time.fixedDeltaTime;
         Vector3 direction = new Vector3(agent.transform.position.x, shootingPoint.position.y, agent.transform.position.z) - shootingPoint.position;
-        
 
+        if (_cooldown > 0.0f){
+            // Debug.DrawRay(shootingPoint.position, direction, Color.blue);  
+            turretBase.LookAt(new Vector3(agent.transform.position.x, turretBase.position.y, agent.transform.position.z));
+            return; 
+        }
+        
         if (direction.magnitude > range) {
             // Debug.DrawRay(shootingPoint.position, direction, Color.green);
             turretBase.LookAt(new Vector3(agent.transform.position.x, turretBase.position.y, agent.transform.position.z));
             return;
         }
+        
         if (Physics.Raycast(shootingPoint.position, direction.normalized, out var hit, Mathf.Infinity)) {
             if (hit.collider.gameObject != agent) {
                 // Debug.DrawRay(shootingPoint.position, direction, Color.red);
@@ -95,14 +100,13 @@ public class BotController : MonoBehaviour
         Vector2 vA = new Vector2(agent_rigidbody.velocity.x, agent_rigidbody.velocity.z);
         float sB = _shootVelocity;
 
-        if (InterceptionDirection(a, b, vA, sB, out var prediction)){
+        _cooldown = 1.0f / fireRate;
+        if (InterceptionDirection(a, b, vA, sB, out var prediction))
+        {
             var angle = Vector2.SignedAngle(Vector2.up, prediction);
-            Quaternion lookRotation = Quaternion.Euler(0, -(angle + angleError), 0);
+            Quaternion lookRotation = Quaternion.Euler(0, -(angle + Random.Range(-angleError, angleError)), 0);
             turretBase.rotation = Quaternion.Slerp(turretBase.rotation, lookRotation, Time.fixedDeltaTime * turretRotationSpeed * Mathf.Rad2Deg);
-            if (_cooldown <= 0.0f) {
-                Shoot();
-                _cooldown = 1.0f / fireRate;
-            }
+            Shoot();
         }
     }
     private void Shoot() {

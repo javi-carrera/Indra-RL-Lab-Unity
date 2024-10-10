@@ -10525,7 +10525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912dd0564324d904abb8562bc75a76f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  botDifficulty: 1
   speed: 4
   waypoints:
   - {fileID: 0}
@@ -10538,12 +10537,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  followWaypoints: 1
   bulletPrefab: {fileID: 5778056209484332972, guid: fa6c3e66140b1024391c327dd337dc39,
     type: 3}
   agent: {fileID: 0}
-  shootVelocity: 35
-  turretRotationSpeed: 100
-  fireRate: 1
+  canShoot: 1
+  range: 20
+  turretRotationSpeed: 5.5
+  fireRate: 2
+  angleError: 15
 --- !u!1 &6000127143375451224
 GameObject:
   m_ObjectHideFlags: 0
