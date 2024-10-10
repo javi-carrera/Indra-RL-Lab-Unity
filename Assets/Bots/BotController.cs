@@ -24,7 +24,6 @@ public class BotController : MonoBehaviour
     public float angleError;
     private float _shootVelocity;
     private float _cooldown;
-    private float maxbulletDistance;
     private Rigidbody agent_rigidbody;
     private Transform turretBase;
     private Transform shootingPoint;
@@ -76,7 +75,7 @@ public class BotController : MonoBehaviour
         Vector3 direction = new Vector3(agent.transform.position.x, shootingPoint.position.y, agent.transform.position.z) - shootingPoint.position;
         
 
-        if (direction.magnitude > maxbulletDistance) {
+        if (direction.magnitude > range) {
             // Debug.DrawRay(shootingPoint.position, direction, Color.green);
             turretBase.LookAt(new Vector3(agent.transform.position.x, turretBase.position.y, agent.transform.position.z));
             return;
