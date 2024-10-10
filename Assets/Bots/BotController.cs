@@ -43,8 +43,10 @@ public class BotController : MonoBehaviour
         navAgent.speed = speed;   
         if (speed > 0.0f){
             if (followWaypoints){
+                navAgent.stoppingDistance = 2.0f;
                 GoToNextWaypoint();
             }else{
+                navAgent.stoppingDistance = Mathf.Min(range, 8.0f);
                 navAgent.SetDestination(agent.transform.position);
             }
         }
