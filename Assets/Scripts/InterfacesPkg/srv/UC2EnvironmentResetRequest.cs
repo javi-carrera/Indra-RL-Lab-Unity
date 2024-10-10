@@ -14,17 +14,20 @@ namespace RosMessageTypes.InterfacesPkg
         public override string RosMessageName => k_RosMessageName;
 
         public BuiltinInterfaces.TimeMsg request_sent_timestamp;
+        public bool reset;
         public BotParamsMsg bot_params;
 
         public UC2EnvironmentResetRequest()
         {
             this.request_sent_timestamp = new BuiltinInterfaces.TimeMsg();
+            this.reset = false;
             this.bot_params = new BotParamsMsg();
         }
 
-        public UC2EnvironmentResetRequest(BuiltinInterfaces.TimeMsg request_sent_timestamp, BotParamsMsg bot_params)
+        public UC2EnvironmentResetRequest(BuiltinInterfaces.TimeMsg request_sent_timestamp, bool reset, BotParamsMsg bot_params)
         {
             this.request_sent_timestamp = request_sent_timestamp;
+            this.reset = reset;
             this.bot_params = bot_params;
         }
 
@@ -33,12 +36,14 @@ namespace RosMessageTypes.InterfacesPkg
         private UC2EnvironmentResetRequest(MessageDeserializer deserializer)
         {
             this.request_sent_timestamp = BuiltinInterfaces.TimeMsg.Deserialize(deserializer);
+            deserializer.Read(out this.reset);
             this.bot_params = BotParamsMsg.Deserialize(deserializer);
         }
 
         public override void SerializeTo(MessageSerializer serializer)
         {
             serializer.Write(this.request_sent_timestamp);
+            serializer.Write(this.reset);
             serializer.Write(this.bot_params);
         }
 
@@ -46,6 +51,7 @@ namespace RosMessageTypes.InterfacesPkg
         {
             return "UC2EnvironmentResetRequest: " +
             "\nrequest_sent_timestamp: " + request_sent_timestamp.ToString() +
+            "\nreset: " + reset.ToString() +
             "\nbot_params: " + bot_params.ToString();
         }
 
