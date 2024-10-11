@@ -11865,8 +11865,8 @@ MonoBehaviour:
   angleMin: 0
   angleMax: 360
   numRays: 20
-  rangeMin: 0.5
-  rangeMax: 10
+  rangeMin: 0
+  rangeMax: 35
   tagsData: []
   drawDebugRays: 1
 --- !u!1660057539 &9223372036854775807
