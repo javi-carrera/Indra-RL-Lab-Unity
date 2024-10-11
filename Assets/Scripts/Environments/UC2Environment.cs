@@ -20,6 +20,7 @@ public class UC2Environment : Environment<
     public AgentType agent;
     public GameObject target;
     public List<Transform> spawnPoints;
+    private BotController botController;
 
 
     protected override void InitializeEnvironment() {
@@ -30,6 +31,8 @@ public class UC2Environment : Environment<
 
         foreach (IAgent agent in _agents)
             agent.Initialize();
+
+        botController = target.GetComponent<BotController>();
     }
 
     protected override void Action(StateRequest request) {
@@ -46,7 +49,6 @@ public class UC2Environment : Environment<
 
         return response;
     }
-
     protected override ResetResponse ResetEnvironment(ResetRequest request, TimeMsg requestReceivedTimestamp) {
 
         if (overrideReset) return new ResetResponse{
@@ -64,6 +66,14 @@ public class UC2Environment : Environment<
 
         agent.transform.SetPositionAndRotation(spawnPoints[agentSpawnPointIndex].position, spawnPoints[agentSpawnPointIndex].rotation);
         target.transform.SetPositionAndRotation(spawnPoints[targetSpawnPointIndex].position, spawnPoints[targetSpawnPointIndex].rotation);
+
+        botController.speed = request.bot_params.speed;
+        botController.fireRate = request.bot_params.fire_rate; 
+        botController.canShoot = request.bot_params.can_shoot;
+        botController.followWaypoints = request.bot_params.follow_waypoints;
+        botController.range = request.bot_params.range;
+        botController.turretRotationSpeed = request.bot_params.turret_rotation_speed;
+        botController.angleError = request.bot_params.angle_error;
 
         ResetResponse response = new() {
             state = agent.ResetAgent(),

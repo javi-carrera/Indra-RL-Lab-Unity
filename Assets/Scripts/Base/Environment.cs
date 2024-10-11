@@ -147,8 +147,6 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
         Time.fixedDeltaTime = fixedDeltaTime;
         _timeScale = sampleTime / Time.fixedDeltaTime / fixedUpdatesPerStep;
         Time.timeScale = _timeScale;
-
-        Debug.Log($"Time scale: {_timeScale}");
     }
 
     /// <summary>
