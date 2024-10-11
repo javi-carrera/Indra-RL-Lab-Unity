@@ -6,7 +6,6 @@ public class BotController : MonoBehaviour
     // Dropdown in the Inspector for selecting difficulty
     [Header("Bot Movement")]
     // Waypoints for the bot to move through
-    public float speed;
     public List<Transform> waypoints;
     public bool followWaypoints;
     private int currentWaypointIndex = 0;
@@ -21,12 +20,13 @@ public class BotController : MonoBehaviour
     public float turretRotationSpeed;
     public float fireRate;
     public float angleError;
+    public NavMeshAgent navAgent;
     private float _shootVelocity;
     private float _cooldown;
     private Rigidbody agent_rigidbody;
     private Transform turretBase;
     private Transform shootingPoint;
-    private NavMeshAgent navAgent;
+    
 
     private void Start()
     {
@@ -40,8 +40,7 @@ public class BotController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        navAgent.speed = speed;   
-        if (speed > 0.0f){
+        if (navAgent.speed > 0.0f){
             if (followWaypoints){
                 navAgent.stoppingDistance = 2.0f;
                 GoToNextWaypoint();

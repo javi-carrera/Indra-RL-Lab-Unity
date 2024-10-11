@@ -22,7 +22,6 @@ public class UC2Environment : Environment<
     public List<Transform> spawnPoints;
     private BotController botController;
 
-
     protected override void InitializeEnvironment() {
 
         _agents = new List<IAgent> {
@@ -65,9 +64,9 @@ public class UC2Environment : Environment<
         }
 
         agent.transform.SetPositionAndRotation(spawnPoints[agentSpawnPointIndex].position, spawnPoints[agentSpawnPointIndex].rotation);
-        target.transform.SetPositionAndRotation(spawnPoints[targetSpawnPointIndex].position, spawnPoints[targetSpawnPointIndex].rotation);
-
-        botController.speed = request.bot_params.speed;
+        botController.navAgent.Warp(spawnPoints[targetSpawnPointIndex].position);
+        
+        botController.navAgent.speed = request.bot_params.speed;
         botController.fireRate = request.bot_params.fire_rate; 
         botController.canShoot = request.bot_params.can_shoot;
         botController.followWaypoints = request.bot_params.follow_waypoints;
