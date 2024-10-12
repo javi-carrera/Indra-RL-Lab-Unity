@@ -64,15 +64,8 @@ public class UC2Environment : Environment<
         }
 
         agent.transform.SetPositionAndRotation(spawnPoints[agentSpawnPointIndex].position, spawnPoints[agentSpawnPointIndex].rotation);
-        botController.navAgent.Warp(spawnPoints[targetSpawnPointIndex].position);
-        
-        botController.navAgent.speed = request.bot_params.speed;
-        botController.fireRate = request.bot_params.fire_rate; 
-        botController.canShoot = request.bot_params.can_shoot;
-        botController.followWaypoints = request.bot_params.follow_waypoints;
-        botController.range = request.bot_params.range;
-        botController.turretRotationSpeed = request.bot_params.turret_rotation_speed;
-        botController.angleError = request.bot_params.angle_error;
+        botController.SetPosition(spawnPoints[targetSpawnPointIndex].position);
+        botController.ResetBot(request);
 
         ResetResponse response = new() {
             state = agent.ResetAgent(),

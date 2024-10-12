@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
+using ResetRequest = RosMessageTypes.InterfacesPkg.UC2EnvironmentResetRequest;
 public class BotController : MonoBehaviour
 {
     // Dropdown in the Inspector for selecting difficulty
@@ -38,6 +39,22 @@ public class BotController : MonoBehaviour
         _shootVelocity = range / Mathf.Sqrt(2 * shootingPoint.position.y / Mathf.Abs(Physics.gravity.y));
     }
 
+    public void ResetBot(ResetRequest request){
+        navAgent.speed = request.bot_params.speed;
+        fireRate = request.bot_params.fire_rate; 
+        canShoot = request.bot_params.can_shoot;
+        followWaypoints = request.bot_params.follow_waypoints;
+        range = request.bot_params.range;
+        turretRotationSpeed = request.bot_params.turret_rotation_speed;
+        angleError = request.bot_params.angle_error;
+        _cooldown = 1.0f / fireRate;
+        _shootVelocity = range / Mathf.Sqrt(2 * shootingPoint.position.y / Mathf.Abs(Physics.gravity.y));
+    }
+
+    public void SetPosition(Vector3 position){
+        navAgent.Warp(position);
+    }
+
     private void FixedUpdate()
     {
         if (navAgent.speed > 0.0f){
@@ -65,7 +82,7 @@ public class BotController : MonoBehaviour
             // Get new random waypoint index
             int newWaypointIndex = Random.Range(0, waypoints.Count);
             currentWaypointIndex = currentWaypointIndex == newWaypointIndex ? (currentWaypointIndex + 1) % waypoints.Count : newWaypointIndex;
-
+            
             // Set the agent's destination to the next waypoint
             navAgent.SetDestination(waypoints[currentWaypointIndex].position);
         }
@@ -123,7 +140,6 @@ public class BotController : MonoBehaviour
             
             // Set the position and rotation of the bullet
             bullet.transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
-
             // Set the velocity of the bullet
             rb.AddForce(_shootVelocity * shootingPoint.forward, ForceMode.VelocityChange);
         }
