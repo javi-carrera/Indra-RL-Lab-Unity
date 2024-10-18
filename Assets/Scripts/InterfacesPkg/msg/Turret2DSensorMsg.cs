@@ -14,6 +14,8 @@ namespace RosMessageTypes.InterfacesPkg
         public override string RosMessageName => k_RosMessageName;
 
         public float current_angle;
+        public float laser_range;
+        public float max_laser_range;
         public float fire_rate;
         public float cooldown;
         public bool has_fired;
@@ -21,14 +23,18 @@ namespace RosMessageTypes.InterfacesPkg
         public Turret2DSensorMsg()
         {
             this.current_angle = 0.0f;
+            this.laser_range = 0.0f;
+            this.max_laser_range = 0.0f;
             this.fire_rate = 0.0f;
             this.cooldown = 0.0f;
             this.has_fired = false;
         }
 
-        public Turret2DSensorMsg(float current_angle, float fire_rate, float cooldown, bool has_fired)
+        public Turret2DSensorMsg(float current_angle, float laser_range, float max_laser_range, float fire_rate, float cooldown, bool has_fired)
         {
             this.current_angle = current_angle;
+            this.laser_range = laser_range;
+            this.max_laser_range = max_laser_range;
             this.fire_rate = fire_rate;
             this.cooldown = cooldown;
             this.has_fired = has_fired;
@@ -39,6 +45,8 @@ namespace RosMessageTypes.InterfacesPkg
         private Turret2DSensorMsg(MessageDeserializer deserializer)
         {
             deserializer.Read(out this.current_angle);
+            deserializer.Read(out this.laser_range);
+            deserializer.Read(out this.max_laser_range);
             deserializer.Read(out this.fire_rate);
             deserializer.Read(out this.cooldown);
             deserializer.Read(out this.has_fired);
@@ -47,6 +55,8 @@ namespace RosMessageTypes.InterfacesPkg
         public override void SerializeTo(MessageSerializer serializer)
         {
             serializer.Write(this.current_angle);
+            serializer.Write(this.laser_range);
+            serializer.Write(this.max_laser_range);
             serializer.Write(this.fire_rate);
             serializer.Write(this.cooldown);
             serializer.Write(this.has_fired);
@@ -56,6 +66,8 @@ namespace RosMessageTypes.InterfacesPkg
         {
             return "Turret2DSensorMsg: " +
             "\ncurrent_angle: " + current_angle.ToString() +
+            "\nlaser_range: " + laser_range.ToString() +
+            "\nmax_laser_range: " + max_laser_range.ToString() +
             "\nfire_rate: " + fire_rate.ToString() +
             "\ncooldown: " + cooldown.ToString() +
             "\nhas_fired: " + has_fired.ToString();

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using RosMessageTypes.BuiltinInterfaces;
 using System.Threading.Tasks;
 using System.Globalization;
-using UnityEngine.UIElements;
 
 
 public interface IEnvironment {
@@ -144,9 +143,11 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
 
     private void InitializeSimulation() {
 
+
         Time.fixedDeltaTime = fixedDeltaTime;
         _timeScale = sampleTime / Time.fixedDeltaTime / fixedUpdatesPerStep;
         Time.timeScale = _timeScale;
+        Debug.Log($"Time Scale: {Time.timeScale}");
     }
 
     /// <summary>
@@ -159,7 +160,8 @@ public abstract class Environment<TStepRequest, TStepResponse, TResetRequest, TR
         Action(request);
 
         _fixedUpdateCallsBeforeStep = 0;
-        while (_fixedUpdateCallsBeforeStep < fixedUpdatesPerStep)
+        // while (_fixedUpdateCallsBeforeStep < fixedUpdatesPerStep)
+        while (_fixedUpdateCallsBeforeStep < fixedUpdatesPerStep * Time.timeScale)
             await Task.Yield();
 
         TStepResponse response = State(requestReceivedTimestamp);

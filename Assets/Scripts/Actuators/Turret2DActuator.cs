@@ -45,6 +45,8 @@ public class Turret2DActuator : Actuator<Turret2DActuatorMsg> {
         _previousShootingPointPosition = shootingPoint.position;
         _shootingPointVelocity = Vector3.zero;
         cooldown = 1.0f / fireRate;
+
+        target.localEulerAngles = Vector3.zero;
     }
 
     protected override void UpdateActuator() {

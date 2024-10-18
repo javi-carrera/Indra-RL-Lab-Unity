@@ -617,6 +617,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
         type: 3}
+      propertyPath: canShoot
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572794779186092560, guid: e568208b644179d43ac1bad5b8913a97,
+        type: 3}
       propertyPath: angleError
       value: 10
       objectReference: {fileID: 0}
@@ -2160,7 +2165,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2267,7 +2272,7 @@ MonoBehaviour:
   overrideAction: 0
   maxLinearVelocity: 5
   maxAngularVelocity: 5
-  maxTurretRotationSpeed: 5.5
+  maxTurretRotationSpeed: 5
   _pose2DSensor: {fileID: 8009871675184661083}
   _twist2DSensor: {fileID: 816849141941997488}
   _healthSensor: {fileID: 653127548901269344}
@@ -12878,11 +12883,11 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1977201485}
   - {fileID: 56981102}
   - {fileID: 776269838}
+  - {fileID: 1977201485}
   - {fileID: 1390776574}
   - {fileID: 5702408477385961760}
+  - {fileID: 682446763}
   - {fileID: 776672758}
   - {fileID: 893927830}
-  - {fileID: 682446763}

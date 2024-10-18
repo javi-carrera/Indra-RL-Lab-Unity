@@ -10756,10 +10756,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turret2DSensorMsg:
     current_angle: 0
+    laser_range: 0
+    max_laser_range: 0
     fire_rate: 0
     cooldown: 0
     has_fired: 0
   turret2DActuator: {fileID: 833635823}
+  drawDebugRay: 1
 --- !u!114 &833635826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10784,8 +10787,8 @@ MonoBehaviour:
   angleMin: 0
   angleMax: 360
   numRays: 20
-  rangeMin: 0.5
-  rangeMax: 10
+  rangeMin: 0
+  rangeMax: 35
   tagsData: []
   drawDebugRays: 1
 --- !u!114 &833635827
@@ -10885,7 +10888,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -11227,7 +11230,7 @@ MonoBehaviour:
   pause: 1
   sampleTime: 0.1
   fixedDeltaTime: 0.01
-  fixedUpdatesPerStep: 10
+  fixedUpdatesPerStep: 2
   overrideReset: 0
   agent: {fileID: 9132354452221323678}
   target: {fileID: 833635835}
@@ -11856,7 +11859,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -22351,10 +22354,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turret2DSensorMsg:
     current_angle: 0
+    laser_range: 0
+    max_laser_range: 0
     fire_rate: 0
     cooldown: 0
     has_fired: 0
   turret2DActuator: {fileID: 1143023466833175528}
+  drawDebugRay: 1
 --- !u!114 &8799486311350846649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22541,8 +22547,8 @@ MonoBehaviour:
   angleMin: 0
   angleMax: 360
   numRays: 20
-  rangeMin: 0.5
-  rangeMax: 10
+  rangeMin: 0
+  rangeMax: 25
   tagsData: []
   drawDebugRays: 1
 --- !u!114 &9132354452221323678
